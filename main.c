@@ -1,22 +1,22 @@
 #include <stdio.h>
-int sumaFila (int [5][12], int[], int, int);
-int sumaColumna (int [5][12], int[], int, int);
+char buscarIdenti (int);
 int obtenerHornoMaxProduccion (int [3][12], int []);
 int obtenerMesMaxProduccion (int [5][12], int []);
 void obtenerMesMaxEmpanada (int [5][12]);
 float obtenerPromProduccion (int [3][12]);
 int mayorProdAgosto (int [3][12]);
 int gustoMayorJunio (int [5][12]);
+void obtenerTop3Anual (int [5][12]);
 int main()
 {
     int gustoMes [5][12] = {1,5,3,4,9,6,7,8,9,10,11,12,2,14,15,16,1,10,19,20,1,2,3,4,5,6,7,8,9,10,11,3,13,8,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,1,15,12,13,14,15,16,7,18,19,4};
-    int hornoMes [3][12] = {1,2,3,4,5,6,7,8,9,10,9,4,1,2,3,4,5,6,7,9,9,10,5,12,1,2,3,4,5,6,7,8,9,10,10,2};
+    int hornoMes [3][12] = {1,2,3,4,5,6,7,8,9,10,9,4,1,2,3,4,5,6,7,9,9,10,5,12,1,2,3,4,5,6,7,8,9,20,10,2};
     int horno [3]= {1,2,3};
     int meses [12]= {1,2,3,4,5,6,7,8,9,10,11,12};
     int gusto [5]= {0,1,2,3,4};
-    int i,j;
     int hornoMax = obtenerHornoMaxProduccion (hornoMes, horno);
-    printf("\n1. El horno con mayor cantidad cocinada anual es HORNO_COCINA_%d", hornoMax);
+    char identi1 = buscarIdenti(hornoMax);
+    printf("1. El horno con mayor cantidad cocinada anual es HORNO_COCINA_%d_%c", hornoMax, identi1);
     int mesMax = obtenerMesMaxProduccion (gustoMes, meses);
     printf("\n2. El mes de maxima produccion es el mes %d", mesMax);
     printf("\n3. Mes de máxima producción por tipo de empanada:");
@@ -24,61 +24,67 @@ int main()
     float proMensual = obtenerPromProduccion(gustoMes);
     printf("\n4. El promedio mensual de produccion es %f", proMensual);
     int hornoAgosto = mayorProdAgosto (hornoMes);
-    printf("\n5. El horno con mayor producción en agosto es HORNO_COCINA_%d", hornoAgosto);
+    char identi2 = buscarIdenti(hornoAgosto);
+    printf("\n5. El horno con mayor producción en agosto es HORNO_COCINA_%d_%c", hornoAgosto, identi2);
     int gustoJunio = gustoMayorJunio (gustoMes);
     printf("\n6. El gusto de empanada mas producido en junio es el gusto %d", gustoJunio);
+    printf("\n7. El top 3 de empanadas mayormente producidas en el año:");
+    int i,j,gustoMasProducido [5] = {0};
+    for (i = 0; i < 5; i++){
+        for (j = 0; j < 12; j++){
+            if (gustoMes[i][j] > gustoMasProducido[i])
+                gustoMasProducido [i] = gustoMes [i][j];
+        }
+    }
+    obtenerTop3Anual(gustoMes);
     return 0;
 }
 
-int sumaFila(int matriz [5][12], int maxVec [], int numFila, int numCol){
-    int i,j;
-    int vector [5] = {0};
-    for(i = 0; i < numFila; i++){
-        for (j = 0; j < numCol; j++){
-            vector [i] =+ matriz[i][j];
-        }   
-    }
-    int max = maxVec[0];
-    int cantMax = vector [0];
-    for (i = 1; i <numFila; i++){
-        if (vector [i] > cantMax){
-            cantMax = vector [i];
-            max = maxVec [i];
-        }
-    }
-    return max;
-}
-
-int sumaColumna(int matriz [5][12], int maxVec [], int numFila, int numCol){
-    int i,j;
-    int vector [12] = {0};
-    for (i = 0; i < numCol; i++){
-        for (j = 0; j < numFila; j++){
-            vector [i] += matriz [j][i];
-        }
-    }
-    int max = maxVec[0];
-    int cantMax = vector [0];
-    for (i = 1; i < numCol; i++){
-        if (vector [i] > cantMax){
-            cantMax = vector [i];
-            max = maxVec [i];
-        }
-    }
-    return max;
+char buscarIdenti(int horno){
+    char identi = 'X';
+    if(horno != 1)
+        if (horno == 2)
+            identi = 'Y';
+        else
+            identi = 'Z';
+    return identi;
 }
 
 int obtenerHornoMaxProduccion (int x [3][12], int y []){
-    int numFila = 3;
-    int numCol = 12;
-    int max = sumaFila (x,y,numFila,numCol);
+    int i,j;
+    int vector [3] = {0};
+    for (i = 0; i < 3; i++){
+        for (j = 0; j < 12; j++){
+            vector [i] += x[i][j];
+        }
+    }
+    int max = y [0];
+    int cantMax = vector [0];
+    for (i = 1; i < 3; i++){
+        if (vector [i] > cantMax){
+            cantMax = vector [i];
+            max = y [i];
+        }
+    }
     return max;
 }
 
 int obtenerMesMaxProduccion (int x [5][12], int y [12]){
-    int numFila = 5;
-    int numCol = 12;
-    int max = sumaColumna (x,y,numFila,numCol);
+    int i,j;
+    int vector [12] = {0};
+    for (i = 0; i < 12; i++){
+        for (j = 0; j < 5; j++){
+            vector [i] += x [j][i];
+        }
+    }
+    int max = y [0];
+    int cantMax = vector [0];
+    for (i = 1; i < 12; i++){
+        if (vector [i] > cantMax){
+            cantMax = vector [i];
+            max = y [i];
+        }
+    }
     return max;
 }
 
@@ -118,10 +124,30 @@ int mayorProdAgosto(int x [3][12]){
 
 int gustoMayorJunio(int x [5][12]){
     int maxJunio = 0,i;
-    for (i = 0; i < 5; i++){
-        if (x[i][5] > x [maxJunio][5])//no funciona todavia el de gustos, refinar.
+    for (i = 1; i < 5; i++){
+        if (x[i][5] > x [maxJunio][5])
             maxJunio = i;
     }
     return maxJunio;
 }
 
+void obtenerTop3Anual (int matriz [5][12]){
+    int totalPorGusto [5] = {0};
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 12; j++){
+            totalPorGusto[i]+= matriz[i][j];
+        }
+    }
+    for (int k = 0; k < 3; k++){
+        int maxGusto = -1;
+        int maxCantidad = -1;
+        for(int i = 0; i < 5; i++){
+            if (totalPorGusto[i] > maxCantidad){
+                maxCantidad = totalPorGusto [i];
+                maxGusto = i;
+            }
+        }
+        printf("\n   Tipo: %d, Cantidad: %d", maxGusto, maxCantidad);
+        totalPorGusto [maxGusto] = -1;
+    }
+}
