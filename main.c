@@ -1,4 +1,5 @@
 #include <stdio.h>
+void cargarCantidades (int [5][12], int [3][12]);
 char buscarIdenti (int);
 int obtenerHornoMaxProduccion (int [3][12], int []);
 int obtenerMesMaxProduccion (int [5][12], int []);
@@ -9,11 +10,18 @@ int gustoMayorJunio (int [5][12]);
 void obtenerTop3Anual (int [5][12]);
 int main()
 {
-    int gustoMes [5][12] = {1,5,3,4,9,6,7,8,9,10,11,12,2,14,15,16,1,10,19,20,1,2,3,4,5,6,7,8,9,10,11,3,13,8,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,1,15,12,13,14,15,16,7,18,19,4};
-    int hornoMes [3][12] = {1,2,3,4,5,6,7,8,9,10,9,4,1,2,3,4,5,6,7,9,9,10,5,12,1,2,3,4,5,6,7,8,9,20,10,2};
+    //Con el código actual se puede hacer los ingresos manualmente.
+    //Si no se utiliza la función, se pueden utilizar las matrices comentadas que ya están cargadas, son números ficticios.
+    //No están relacionadas las matrices comentadas entre si, por lo cual no concuerdan las cantidades.
+    //El programa se creó en base a las matrices ya cargadas probando que funcione en cada resultado posible.
+    int gustoMes [5][12] = {0};
+    int hornoMes [3][12] = {0};
+    //int gustoMes [5][12] = {1,5,3,4,9,6,7,8,9,10,11,12,2,14,15,16,1,10,19,20,1,2,3,4,5,6,7,8,9,10,11,3,13,8,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,1,15,12,13,14,15,16,7,18,19,4};
+    //int hornoMes [3][12] = {1,2,3,4,5,6,7,8,9,10,9,4,1,2,3,4,5,6,7,9,9,10,5,12,1,2,3,4,5,6,7,8,9,20,10,2};
     int horno [3]= {1,2,3};
     int meses [12]= {1,2,3,4,5,6,7,8,9,10,11,12};
     int gusto [5]= {0,1,2,3,4};
+    cargarCantidades(gustoMes,hornoMes);
     int hornoMax = obtenerHornoMaxProduccion (hornoMes, horno);
     char identi1 = buscarIdenti(hornoMax);
     printf("1. El horno con mayor cantidad cocinada anual es HORNO_COCINA_%d_%c", hornoMax, identi1);
@@ -38,6 +46,27 @@ int main()
     }
     obtenerTop3Anual(gustoMes);
     return 0;
+}
+
+void cargarCantidades (int gustoMes[5][12], int hornoMes [3][12]){
+    while(1){
+        int mes,gusto,horno,cant;
+        printf("Ingrese mes del año (1 a 12):");
+        scanf("%d", &mes);
+        
+        if(mes < 1 || mes > 12){
+            break;
+        }
+        printf("Gusto de empanada (0 a 4):");
+        scanf("%d", &gusto);
+        printf("Horno donde se realizó la cocción (1 a 3):");
+        scanf("%d", &horno);
+        printf("Cantidad:");
+        scanf("%d", &cant);
+        
+        gustoMes[gusto][mes-1]+= cant;
+        hornoMes[horno-1][mes-1]+=cant;
+    }
 }
 
 char buscarIdenti(int horno){
