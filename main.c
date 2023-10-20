@@ -1,7 +1,7 @@
 #include <stdio.h>
 void cargarCantidades (int [5][12], int [3][12]);
 char buscarIdenti (int);
-int obtenerHornoMaxProduccion (int [3][12], int []);
+int obtenerHornoMaxProduccion (int [3][12]);
 int obtenerMesMaxProduccion (int [5][12], int []);
 void obtenerMesMaxEmpanada (int [5][12]);
 float obtenerPromProduccion (int [3][12]);
@@ -10,19 +10,11 @@ int gustoMayorJunio (int [5][12]);
 void obtenerTop3Anual (int [5][12]);
 int main()
 {
-    //Con el código actual se puede hacer los ingresos manualmente.
-    //Si no se utiliza la función, se pueden utilizar las matrices comentadas que ya están cargadas, son números ficticios.
-    //No están relacionadas las matrices comentadas entre si, por lo cual no concuerdan las cantidades.
-    //El programa se creó en base a las matrices ya cargadas probando que funcione en cada resultado posible.
     int gustoMes [5][12] = {0};
     int hornoMes [3][12] = {0};
-    //int gustoMes [5][12] = {1,5,3,4,9,6,7,8,9,10,11,12,2,14,15,16,1,10,19,20,1,2,3,4,5,6,7,8,9,10,11,3,13,8,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,1,15,12,13,14,15,16,7,18,19,4};
-    //int hornoMes [3][12] = {1,2,3,4,5,6,7,8,9,10,9,4,1,2,3,4,5,6,7,9,9,10,5,12,1,2,3,4,5,6,7,8,9,20,10,2};
-    int horno [3]= {1,2,3};
     int meses [12]= {1,2,3,4,5,6,7,8,9,10,11,12};
-    int gusto [5]= {0,1,2,3,4};
     cargarCantidades(gustoMes,hornoMes);
-    int hornoMax = obtenerHornoMaxProduccion (hornoMes, horno);
+    int hornoMax = obtenerHornoMaxProduccion (hornoMes);
     char identi1 = buscarIdenti(hornoMax);
     printf("1. El horno con mayor cantidad cocinada anual es HORNO_COCINA_%d_%c", hornoMax, identi1);
     int mesMax = obtenerMesMaxProduccion (gustoMes, meses);
@@ -51,7 +43,7 @@ int main()
 void cargarCantidades (int gustoMes[5][12], int hornoMes [3][12]){
     while(1){
         int mes,gusto,horno,cant;
-        printf("Ingrese mes del año (1 a 12):");
+        printf("Ingrese mes del año (1 a 12). Ingresar número fuera del rango para detener la carga:");
         scanf("%d", &mes);
         
         if(mes < 1 || mes > 12){
@@ -71,7 +63,7 @@ void cargarCantidades (int gustoMes[5][12], int hornoMes [3][12]){
 
 char buscarIdenti(int horno){
     char identi = 'X';
-    if(horno != 1)
+    if(horno !=1)
         if (horno == 2)
             identi = 'Y';
         else
@@ -79,8 +71,8 @@ char buscarIdenti(int horno){
     return identi;
 }
 
-int obtenerHornoMaxProduccion (int x [3][12], int y []){
-    int i,j;
+int obtenerHornoMaxProduccion (int x [3][12]){
+    int i,j,y [3]= {1,2,3};
     int vector [3] = {0};
     for (i = 0; i < 3; i++){
         for (j = 0; j < 12; j++){
@@ -89,7 +81,7 @@ int obtenerHornoMaxProduccion (int x [3][12], int y []){
     }
     int max = y [0];
     int cantMax = vector [0];
-    for (i = 1; i < 3; i++){
+    for (i = 0; i < 3; i++){
         if (vector [i] > cantMax){
             cantMax = vector [i];
             max = y [i];
@@ -148,6 +140,7 @@ int mayorProdAgosto(int x [3][12]){
         if (x[i][7] > x[maxAgosto][7])
             maxAgosto = i;
     }
+    maxAgosto+=1;
     return maxAgosto;
 }
 
